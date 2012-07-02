@@ -17,7 +17,7 @@ setup(
     packages=['scripts'],
     scripts=['scripts/dmr5200'],
     requires=['pyserial'],
-    long_description=read('README'),
+    long_description=read('README.txt'),
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",

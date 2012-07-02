@@ -3,6 +3,7 @@
 import io
 import time
 import serial
+import select
 
 class Dmr5200(object):
     """
@@ -14,7 +15,8 @@ class Dmr5200(object):
             port    - The platform dependent serial port string
             timeout - The timeout (in seconds) to use for serial read/write operations 
         """
-        self.ser = serial.Serial(port, baudrate=1200, bytesize=serial.SEVENBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_TWO, timeout=timeout)
+        self.ser = serial.Serial(port, baudrate=1200, bytesize=serial.SEVENBITS,
+            parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_TWO, timeout=timeout)
         self.sio = io.TextIOWrapper(io.BufferedRWPair(self.ser, self.ser), newline='\r')
     
     def request(self):
@@ -45,8 +47,11 @@ class Dmr5200(object):
         'raw' is the actual string read from the serial port, including the
             trailing carriage return character
         """
-        self.ser.write('\r')
-        line = self.sio.readline()
+        try:
+            self.ser.write('\r')
+            line = self.sio.readline()
+        except select.error:
+            return None
         if len(line) < 6:
             return None
         parts = line.split()

@@ -2,8 +2,13 @@
 
 import sys
 import time
+import signal
 
 from dmr5200 import Dmr5200
+
+run = True
+def handler(signum, frame):
+    run = False
 
 def usage():
     print "Usage: dmr5200 <serial_port> <request_interval>"
@@ -13,15 +18,19 @@ def main(argv):
         usage()
         return 1
     
+    signal.signal(signal.SIGINT, handler)
+    signal.signal(signal.SIGTERM, handler)
+    
     # open the connection to the multimeter
     meter = Dmr5200(argv[1])
     print "Function,Value,Units,Timestamp"
-    while True:
+    while run:
         # request one reading
         result = meter.request()
         if result is None:
             break
-        print "%(function)s,%(value)s,%(units)s,%(timestamp)s" % result
+        line = "%(function)s,%(value)s,%(units)s,%(timestamp)s" % result
+        print line.encode('utf-8')
         time.sleep(int(argv[2]))
     return 0
 

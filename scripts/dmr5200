@@ -31,7 +31,7 @@ def main(argv):
             break
         line = "%(function)s,%(value)s,%(units)s,%(timestamp)s" % result
         print line.encode('utf-8')
-        time.sleep(int(argv[2]))
+        time.sleep(float(argv[2]))
     return 0
 
 if __name__ == '__main__':

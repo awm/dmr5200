@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+
+import sys
+import time
+
+from dmr5200 import Dmr5200
+
+def usage():
+    print "Usage: dmr5200 <serial_port> <request_interval>"
+
+def main(argv):
+    if len(argv) < 3:
+        usage()
+        return 1
+    
+    # open the connection to the multimeter
+    meter = Dmr5200(argv[1])
+    print "Function,Value,Units,Timestamp"
+    while True:
+        # request one reading
+        result = meter.request()
+        if result is None:
+            break
+        print "%(function)s,%(value)s,%(units)s,%(timestamp)s" % result
+        time.sleep(int(argv[2]))
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))

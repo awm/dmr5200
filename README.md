@@ -13,6 +13,14 @@ using the procedure described in Section 8 of the manual.
 
 [1]: <http://www.circuittest.com/dmr-5200-dmm-digital-multimeter-true-rms-computer-interface.html>  "Circuit-Test DMR-5200"
 
+## Installation
+
+To install the library, first install [pyserial][2] and setuptools, and then run
+
+    python setup.py install
+
+[2]: <http://pyserial.sourceforge.net> "pySerial"
+
 ## dmr5200 Script Usage
 
     dmr5200 <serial_port> <request_interval>
